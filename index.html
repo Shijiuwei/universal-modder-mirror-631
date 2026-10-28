@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>universal-modder-mirror-631 - 官方开源镜像与技术白皮书中心</title>
+  <meta name="description" content="High availability mirror and network topology specifications for rehan-remade/universal-modder">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+      :root {
+        --color-primary: #2563eb;
+        --color-primary-hover: #1d4ed8;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.68;
+        color: #1e293b;
+      }
+      .markdown-body {
+        color: #1e293b;
+      }
+      .markdown-body h1 {
+        font-size: 2.25rem;
+        font-weight: 800;
+        margin-top: 1.8rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 2px solid #e2e8f0;
+        color: #0f172a;
+        line-height: 1.25;
+      }
+      .markdown-body h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-top: 1.6rem;
+        margin-bottom: 0.8rem;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid #f1f5f9;
+        color: #1e293b;
+      }
+      .markdown-body h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 1.3rem;
+        margin-bottom: 0.6rem;
+        color: #334155;
+      }
+      .markdown-body p {
+        margin-top: 0.8rem;
+        margin-bottom: 0.8rem;
+        line-height: 1.7;
+      }
+      .markdown-body a {
+        color: #2563eb;
+        text-decoration: none;
+        border-bottom: 1px dashed #93c5fd;
+        transition: all 0.2s ease;
+      }
+      .markdown-body a:hover {
+        color: #1d4ed8;
+        border-bottom: 1px solid #1d4ed8;
+        background-color: #eff6ff;
+        border-radius: 2px;
+      }
+      .markdown-body ul, .markdown-body ol {
+        padding-left: 1.5rem;
+        margin-top: 0.6rem;
+        margin-bottom: 0.6rem;
+      }
+      .markdown-body ul {
+        list-style-type: disc;
+      }
+      .markdown-body ol {
+        list-style-type: decimal;
+      }
+      .markdown-body li {
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+      }
+      .markdown-body pre {
+        background-color: #0f172a;
+        color: #e2e8f0;
+        padding: 1rem 1.2rem;
+        border-radius: 0.75rem;
+        overflow-x: auto;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+      .markdown-body code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.875em;
+        padding: 0.15rem 0.35rem;
+        background-color: #f1f5f9;
+        color: #0f172a;
+        border-radius: 0.35rem;
+        border: 1px solid #e2e8f0;
+      }
+      .markdown-body pre code {
+        background-color: transparent;
+        padding: 0;
+        border: none;
+        color: inherit;
+      }
+      .markdown-body blockquote {
+        margin: 1rem 0;
+        padding: 0.75rem 1.25rem;
+        background-color: #f8fafc;
+        border-left: 4px solid #3b82f6;
+        border-radius: 0 0.5rem 0.5rem 0;
+        color: #475569;
+      }
+      .markdown-body table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.2rem 0;
+        display: block;
+        overflow-x: auto;
+      }
+      .markdown-body th, .markdown-body td {
+        border: 1px solid #cbd5e1;
+        padding: 0.6rem 1rem;
+        text-align: left;
+      }
+      .markdown-body th {
+        background-color: #f1f5f9;
+        font-weight: 600;
+      }
+      .markdown-body tr:nth-child(even) {
+        background-color: #f8fafc;
+      }
+      .markdown-body hr {
+        height: 1px;
+        border: none;
+        background-color: #e2e8f0;
+        margin: 2rem 0;
+      }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col antialiased">
+  <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="./index.html" class="flex items-center gap-2 group">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-105 transition-transform ">LM</span>
+        <span class="font-bold text-slate-900 tracking-tight text-lg group-hover:text-blue-600 transition-colors ">universal-modder-mirror-631</span>
+      </a>
+      <span class="hidden md:inline-block text-xs bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-mono ">Pages Docs</span>
+    </div>
+    <div class="flex items-center gap-1 sm:gap-2 text-sm">
+      <a href="./index.html" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 text-blue-600 bg-blue-50 font-semibold ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span>首页 (README)</span>
+      </a>
+      <a href="./docs/index.html" class="px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 text-slate-600 hover:text-blue-600 hover:bg-slate-50 font-medium ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        <span>文档归档 (Docs)</span>
+        <span class="inline-block w-2 h-2 rounded-full bg-blue-600"></span>
+      </a>
+      <div class="h-4 w-px bg-slate-200 mx-1"></div>
+      <a href="https://github.com/shijiuwei/universal-modder-mirror-631" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 ">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        <span class="hidden sm:inline">GitHub</span>
+      </a>
+      <a href="https://github.com/shijiuwei/universal-modder-mirror-631/wiki" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1.5 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-50 transition-colors flex items-center gap-1.5 ">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="hidden sm:inline">Wiki</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+  <!-- Hero Header -->
+  <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 text-white py-12 px-4 sm:px-6 shadow-md border-b border-slate-800">
+    <div class="max-w-6xl mx-auto">
+      <div class="flex flex-wrap items-center gap-2 mb-3">
+        <span class="px-2.5 py-0.5 bg-blue-500/20 text-blue-300 border border-blue-400/30 rounded-full text-xs font-semibold">✓ 官方高可用开源镜像</span>
+        <span class="px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 rounded-full text-xs font-semibold">● 72h 存活率指标 99.8%</span>
+        <span class="px-2.5 py-0.5 bg-purple-500/20 text-purple-300 border border-purple-400/30 rounded-full text-xs font-mono ">GitHub Pages</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4">universal-modder-mirror-631</h1>
+      <p class="text-slate-300 text-base sm:text-lg max-w-3xl leading-relaxed mb-6">High availability mirror and network topology specifications for rehan-remade/universal-modder</p>
+      
+      <!-- 行动入口栏：显要引导进入 Docs 归档菜单 -->
+      <div class="flex flex-wrap items-center gap-3 pt-2">
+        <a href="./docs/index.html" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm shadow-lg shadow-blue-600/30 transition-all hover:scale-[1.02] active:scale-[0.98] ">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          <span>进入文档归档菜单 (Docs Catalog) &rarr;</span>
+        </a>
+        <a href="#readme-content" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium text-sm border border-white/20 backdrop-blur transition-colors ">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+          <span>查阅项目 README 正文</span>
+        </a>
+        <a href="https://github.com/shijiuwei/universal-modder-mirror-631" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-slate-300 hover:text-white text-xs transition-colors ">
+          <span>访问 GitHub 源码库</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主体区域：两栏布局（主栏：改造后 README；侧栏：Docs 归档菜单预览与外链速查） -->
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex-1 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- 主内容区：展示改造后的 README.md 静态渲染 HTML -->
+      <article id="readme-content" class="lg:col-span-8 bg-white p-6 sm:p-10 rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+          <div class="flex items-center gap-2 text-xs text-slate-500 font-mono ">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span>README.md (已注入高权重拓扑网络)</span>
+          </div>
+          <a href="./docs/index.html" class="text-xs text-blue-600 hover:underline flex items-center gap-1 font-medium ">
+            <span>浏览全部 3 篇归档文档</span>
+            <span>&rarr;</span>
+          </a>
+        </div>
+        <div class="markdown-body">
+          <p align="left">
+  <a href="https://shijiuwei.github.io/universal-modder-mirror-631/"><img src="https://img.shields.io/badge/GitHub_Pages-在线文档中心-2563eb.svg" alt="GitHub Pages"></a>
+  <a href="https://shijiuwei.github.io/universal-modder-mirror-631/docs/"><img src="https://img.shields.io/badge/Docs_Archive-文档归档菜单-10b981.svg" alt="Docs Archive"></a>
+</p>
+<blockquote>
+<p>🌐 <strong>官方在线文档与静态镜像中心 (GitHub Pages)</strong>：<a href="https://shijiuwei.github.io/universal-modder-mirror-631/">https://shijiuwei.github.io/universal-modder-mirror-631/</a><br />
+📚 <strong>技术规约与文档归档菜单 (Docs Catalog)</strong>：<a href="https://shijiuwei.github.io/universal-modder-mirror-631/docs/">https://shijiuwei.github.io/universal-modder-mirror-631/docs/</a></p>
+</blockquote>
+<p align="center">
+  <img src="docs/media/banner.png" alt="universal-modder: mod any game. Point any AI coding agent at the PC games you own. Publish your mods, remix other people's, and make new ones." width="100%">
+</p>
+<p align="center">
+  <b>Skills, tools and a shared knowledge base that let any AI coding agent mod almost any PC game you own.</b><br>
+  The agent finds the game, works out the engine and the route, reads the real code, builds the mod, makes art, 3D and sound
+  with <a href="https://lfod.yx-sf.com/gongxiang/investment-79760303.html">fal</a>, tests it in the running game, cuts the video, and writes down what it learned for the next agent.
+</p>
+<p align="center">
+  <a href="https://drer.ai-hao123.com/kaifa/message-94296430.html"><img alt="community: join us on discord" src="docs/media/badges/discord.png" height="26"></a>
+  <a href="#install"><img alt="works with Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot and OpenCode" src="docs/media/badges/agents.png" height="26"></a>
+  <a href="knowledge/INDEX.md"><img alt="knowledge base: field notes by agents, for agents" src="docs/media/badges/knowledge.png" height="26"></a>
+  <a href="https://cswd.ai-hao123.com/zhizhu/contact-47613990.html"><img alt="assets: fal" src="docs/media/badges/fal.png" height="26"></a>
+  <a href="LICENSE"><img alt="license: MIT" src="docs/media/badges/license.png" height="26"></a>
+</p>
+<p align="center">
+  <img src="docs/media/mods-teaser.gif" alt="Six mods made by AI coding agents, with the universal-modder tile in the corner: Steve gliding an elytra through Los Santos, the Nether spreading over Los Santos, Minecraft mobs fighting the LSPD, the Halo Warthog in Minecraft, a World at War flamethrower in Minecraft, and World at War zombies in Minecraft. It ends on the universal-modder logo and &quot;mod any game.&quot;" width="560">
+</p>
+<p align="center"><b>Coming next: the mod hub at <a href="https://www.siseo.cn/index.html">universalmodder.com</a>.</b> Publish your mods, remix other people's, and make new ones.<br>
+  Share what you make, get help, and follow along:</p>
+<p align="center">
+  <a href="https://lgqx.wtpuscm.cn/liuliang/deal-837711.html"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/discord-dark.svg"><img src="docs/media/discord-light.svg" height="32" alt="join the discord"></picture></a>
+</p>
+<h2>Install</h2>
+<p>Pick your agent. Each gets the same skills (Agent Skills format), the fal MCP server, and the <code>um</code> CLI.</p>
+<table><thead><tr><th>Agent</th><th>Install</th></tr></thead><tbody>
+<tr><td><strong>Claude Code</strong></td><td><code>/plugin marketplace add rehan-remade/universal-modder</code><br><code>/plugin install universal-modder@universal-modder</code></td></tr>
+<tr><td><strong>Codex</strong></td><td><code>codex plugin marketplace add rehan-remade/universal-modder</code><br><code>codex plugin add universal-modder@universal-modder</code></td></tr>
+<tr><td><strong>Gemini CLI</strong></td><td><code>gemini extensions install https://github.com/rehan-remade/universal-modder</code></td></tr>
+<tr><td><strong>VS Code / Copilot</strong></td><td>Enable <code>chat.plugins.enabled</code>, run <strong>Chat: Install Plugin From Source</strong>, and enter this repo's URL</td></tr>
+<tr><td><strong>Cursor</strong></td><td>Cursor Marketplace, or clone (Cursor reads <code>AGENTS.md</code> and <code>.cursor/mcp.json</code>)</td></tr>
+<tr><td><strong>OpenCode</strong></td><td>Clone and run <code>opencode</code> inside it (<code>opencode.json</code> adds the skills and the fal MCP server)<br>or, on OpenCode 2, <code>opencode plugin add 'github:rehan-remade/universal-modder#main::path:plugins/opencode'</code> (the <code>um</code> tool and fal MCP; add the skills with <strong>Skills only</strong>)</td></tr>
+<tr><td><strong>Skills only</strong><br>(any agent)</td><td><code>npx skills add https://github.com/rehan-remade/universal-modder</code></td></tr>
+<tr><td><strong>Anything else</strong></td><td><code>git clone https://github.com/rehan-remade/universal-modder</code> and start your agent inside it</td></tr>
+</tbody></table>
+<p>Inside a clone, each agent finds the skills where it looks for them: <code>.agents/skills</code> (Codex, Gemini CLI,
+Copilot, Cursor, OpenCode) and <code>.claude/skills</code> (Claude Code) are copies of <code>skills/</code>. Instructions are in
+<code>AGENTS.md</code>, which <code>CLAUDE.md</code> and <code>GEMINI.md</code> point to. MCP config is in <code>.mcp.json</code>, <code>.codex/config.toml</code>,
+<code>.cursor/mcp.json</code>, <code>.vscode/mcp.json</code> and <code>opencode.json</code> (which also points OpenCode at <code>skills/</code>).</p>
+<p>Without a clone, OpenCode 2 installs the plugin in <code>plugins/opencode/</code> with <code>opencode plugin add</code>: one
+<code>um_run</code> tool that passes its arguments straight to the CLI and runs <code>um</code> from PATH (see below), plus the
+fal MCP server when <code>FAL_KEY</code> is set and none is configured. A clone doesn't need it. See
+<code>plugins/opencode/README.md</code>.</p>
+<p><strong>The <code>um</code> CLI.</strong> The Claude Code plugin puts it on PATH (its SessionStart hook), and so does a clone opened in
+Claude Code (<code>.claude/settings.json</code>); in a clone with another agent, <code>export PATH="$PWD/bin:$PATH"</code>. Other
+agents' plugin installs (Codex, Cursor, Gemini CLI, OpenCode) don't, so install it once:</p>
+<pre><code class="language-bash">uv tool install git+https://github.com/rehan-remade/universal-modder     # or: pipx install git+...
+</code></pre>
+<p><strong>For assets,</strong> get a <a href="https://ttwp.ai-hao123.com/suanfa/follow-75028580.html">fal API key</a>. It powers both the fal MCP server and
+<code>um fal</code>. Rather than exporting it from a shell profile or a <code>.env</code>, store it once with <code>um fal key set</code>: on
+Linux it goes into the desktop keyring (libsecret's <code>secret-tool</code>), elsewhere into an owner-only
+<code>~/.secrets/fal-key</code>, and <code>um fal</code> finds it there (<code>um fal key status</code> shows which source is used). <code>FAL_KEY</code>
+in the environment still works and wins. The agent configs read <code>FAL_KEY</code>, so start your agent with it set; on
+Linux, take it from the keyring as below. With no key, fal's OAuth endpoint <code>https://mcp.fal.ai/mcp-relay</code>
+signs you in through the browser instead (<a href="https://nfzr.ai-hao123.com/gongsi/web-88330503.html">fal's MCP guides</a>),
+and <code>um comfy</code> makes images on a local ComfyUI server. <code>um sprixen</code> (2D sprites, animation sheets, tiles) uses
+Sprixen, a separate paid service with its own <a href="https://useo.pro/index.html">API key</a> (<code>um sprixen key set</code>).
+<code>um voidless</code> (2D sprites, 8-way turns, animation sets) uses Voidless, also a separate paid service with its own
+<a href="https://zytw.yx-sf.com/pingce/sales-02192515.html">API key</a> (<code>um voidless key set</code>).</p>
+<pre><code class="language-bash">um fal key set                                                   # hidden prompt
+export FAL_KEY="$(secret-tool lookup service fal.ai key api)"    # Linux: before starting the agent
+</code></pre>
+<p>You also need Git, Python 3.10+ and ffmpeg. <code>uv</code> is recommended. Blender is needed for 3D → sprite renders.
+Windows games are driven natively or from WSL.</p>
+<h2>Try it</h2>
+<blockquote>
+<p>Mod Terraria: add a homing missile launcher and a tactical nuke that craters the world. Make the sprites with fal.</p>
+</blockquote>
+<blockquote>
+<p>Make a new civilization for Age of Empires II with a unique unit rendered from 3D.</p>
+</blockquote>
+<blockquote>
+<p>Put real Minecraft inside GTA V story mode. Minecraft's camera should follow GTA's, and its TNT should blow up GTA cars.</p>
+</blockquote>
+<blockquote>
+<p>Port the Warthog from my Halo install into Minecraft, with a gunner on the turret.</p>
+</blockquote>
+<blockquote>
+<p>What engine is <code>C:\Games\Foo</code>, and has anyone modded it before?</p>
+</blockquote>
+<p>The agent starts with the <strong>mod-any-game</strong> skill and runs the same loop every time:</p>
+<ol>
+<li>search the knowledge base;</li>
+<li>recon, then pick a route;</li>
+<li>set up a safe lab (saves backed up);</li>
+<li>read the actual code;</li>
+<li>build one working slice;</li>
+<li>generate assets;</li>
+<li>verify in the real game;</li>
+<li>record;</li>
+<li>package;</li>
+<li>write a field note for the next agent.</li>
+</ol>
+<h2>A knowledge base that AIs write for AIs</h2>
+<p><a href="knowledge/"><code>knowledge/</code></a> holds <strong>field notes</strong>: how specific games were actually modded, decompiled and
+reverse-engineered. Each note gives:</p>
+<ul>
+<li>the exact versions that worked;</li>
+<li>the route, and why;</li>
+<li>what the engine really does;</li>
+<li>how it was verified;</li>
+<li>the gotchas (symptom → cause → fix).</li>
+</ul>
+<p><strong>Every agent that finishes a mod can open a pull request with its note</strong>, so the next agent starts where it
+left off instead of rediscovering the same traps.</p>
+<pre><code class="language-bash">um kb search "grand theft auto"                 # before you start: prior art (works outside the repo too)
+um kb new --game "Hades II" --title "A new boon god" --from-scan hades --agent "Codex (gpt-6)"
+um kb check knowledge/games/hades-ii/a-new-boon-god.md
+um kb pr knowledge/games/hades-ii/a-new-boon-god.md --yes    # after your human says OK: branch, push, PR
+</code></pre>
+<p>Browse <a href="knowledge/INDEX.md"><code>knowledge/INDEX.md</code></a>. Every game is welcome. Contribution rules, for humans and
+AIs, are in <a href="CONTRIBUTING.md"><code>CONTRIBUTING.md</code></a>: no game files, no decompiled dumps, no cheating other
+players, and an honest status and verification.</p>
+<p>A few notes from the community:</p>
+<ul>
+<li><a href="knowledge/games/portal-2/portalcraft-minecraft-inside-portal-2.md">Portalcraft: real Minecraft inside Portal 2</a></li>
+<li><a href="knowledge/games/halo-3-mcc/halo-3-weapons-covenant-vehicles-and-maps-ported-into-minecr.md">Halo 3 weapons, Covenant, vehicles and maps ported into Minecraft</a></li>
+<li><a href="knowledge/games/minecraft/bloons-td-6-in-minecraft.md">Bloons TD 6 inside Minecraft, with the game's rules as a headless sim</a></li>
+<li><a href="knowledge/games/elden-ring/cs2-conversion-of-elden-ring-offline-native-rust-dll-via-me3.md">A CS2-style conversion of Elden Ring offline, as a native Rust DLL</a></li>
+</ul>
+<h2>What's inside</h2>
+<p><strong>Skills</strong> (<code>skills/</code>, Agent Skills format)</p>
+<table>
+  <thead><tr><th width="200">Skill</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><a href="skills/mod-any-game"><code>mod-any-game</code></a></td><td>The whole loop, hard safety rules, and <b>engine playbooks</b>: Unity, Unreal, .NET/XNA (Terraria, Stardew, Celeste), Godot, Source 1/2, Bethesda, Minecraft, AoE2/Genie, Bannerlord, Binding of Isaac, RE Engine/MT Framework/FromSoft/GTA/Hedgehog Engine/Black Rock/Cyberpunk/BG3/Avalanche, native C++, indie engines (GameMaker, RPG Maker, Ren'Py, Paradox, Doom, HTML5, LÖVE, Java), retro decomps</td></tr>
+    <tr><td><a href="skills/game-recon"><code>game-recon</code></a></td><td>Prior field notes, engine and version, managed or native, anti-cheat, loaders, save folders, community route → <code>MODDING_PLAN.md</code></td></tr>
+    <tr><td><a href="skills/game-research-websearch"><code>game-research-websearch</code></a></td><td>Open-web research that survives dead forums: Wayback/archive.today, GitHub/code and Nexus/Workshop/Thunderstore APIs, Reddit/YouTube, login-gated handoff, screenshots as evidence</td></tr>
+    <tr><td><a href="skills/reverse-engineering"><code>reverse-engineering</code></a></td><td>ILSpy / Cpp2IL / Vineflower / Ghidra and IDA over MCP / Cheat Engine / Frida / RenderDoc; reverse-engineer a file format and prove it with a round trip</td></tr>
+    <tr><td><a href="skills/fal-assets"><code>fal-assets</code></a></td><td>Sprites with real transparency, consistent variants, pixel art, seamless textures, PBR maps, image-to-3D, auto-rigging, SFX, music, voice, cutscene video</td></tr>
+    <tr><td><a href="skills/asset-pipeline"><code>asset-pipeline</code></a></td><td>Art → engine-exact frames: cutout, nearest-neighbour fit, palettes, sheets, team-colour masks, 3D → 8/16-heading sprites</td></tr>
+    <tr><td><a href="skills/game-automation"><code>game-automation</code></a></td><td>Launch, screenshot (GPU-safe), click/type safely, windowed mode, crash-reporter cleanup, in-game agent bridges</td></tr>
+    <tr><td><a href="skills/showcase-video"><code>showcase-video</code></a></td><td>Record the window with only the game's audio, pick moments, cut a styled video from an EDL</td></tr>
+    <tr><td><a href="skills/mashup-mods"><code>mashup-mods</code></a></td><td>Game inside a game: content ports, passthrough mods (worked example: Minecraft × GTA V), decomps as libraries, reimplementations</td></tr>
+    <tr><td><a href="skills/publish-mod"><code>publish-mod</code></a></td><td>Lint, package per platform, credits, the post</td></tr>
+    <tr><td><a href="skills/port-a-mod"><code>port-a-mod</code></a></td><td>Port an existing mod to a newer version or loader without drift: one pinned source, a private decompile, data extracted by script, unit-by-unit tests, audits by layer, resumable status docs, and a Forge 1.7.10 → Fabric 1.20.1 mapping table</td></tr>
+    <tr><td><a href="skills/share-field-notes"><code>share-field-notes</code></a></td><td>Search the knowledge base, write your own note, open the PR</td></tr>
+  </tbody>
+</table>
+<p><strong>Agents</strong> (<code>agents/</code>, subagent files with <code>name</code> + <code>description</code> frontmatter): a three-agent team for mods
+that take days. Claude Code loads them with the plugin; in a clone, start with
+<code>claude --plugin-dir . --agent mod-orchestrator</code>. Cursor plugins and Gemini CLI extensions read an <code>agents/</code>
+folder too (untested here; Gemini CLI's subagents can't start other subagents). Three agents use several
+times the tokens of one, so keep it for long mods. What worked for one user: the orchestrator on Fable 5.1 at
+medium effort, the game worker on Sonnet 5.5 at medium, and the offline worker on Opus 5.5 at high. Any agent can
+read the files as role briefs.</p>
+<table>
+  <thead><tr><th width="200">Agent</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td><a href="agents/mod-orchestrator.md"><code>mod-orchestrator</code></a></td><td>The supervisor. Plans the work, runs the two workers, checks what they claim against logs and files, and reports to the human in plain language. Start it as the main session: <code>claude --agent mod-orchestrator</code></td></tr>
+    <tr><td><a href="agents/mod-game-worker.md"><code>mod-game-worker</code></a></td><td>The only agent that touches the running game: build, deploy, launch, probe, measure, fix</td></tr>
+    <tr><td><a href="agents/mod-offline-worker.md"><code>mod-offline-worker</code></a></td><td>Never touches the game: studies SDK data, dumps and other mods, designs features, writes generators and patches, tests them against stubs, and hands over the exact live probes to run</td></tr>
+  </tbody>
+</table>
+<p><strong>The <code>um</code> CLI</strong> (Python). Every command has <code>--help</code> with examples.</p>
+<!-- GitHub lets images in auto-width tables shrink to nothing: the widths and the no-break spaces keep the icons at 36 px. -->
+<table>
+  <thead><tr><th width="62">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th width="170">Command</th><th>What it does</th></tr></thead>
+  <tbody>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/scan-dark.svg"><img src="docs/media/icons/scan-light.svg" width="36" height="36" alt=""></picture></td><td><code>um scan</code></td><td>Find Steam/Epic/Xbox installs; fingerprint engine and version, .NET vs native, anti-cheat, installed loaders, save folders, ranked routes</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/fal-dark.svg"><img src="docs/media/icons/fal-light.svg" width="36" height="36" alt=""></picture></td><td><code>um fal</code></td><td><code>sprite</code>, <code>image</code>, <code>edit</code>, <code>rmbg</code>, <code>pixelate</code>, <code>upscale</code>, <code>texture</code>, <code>pbr</code>, <code>model3d</code>, <code>rig</code>, <code>sfx</code>, <code>music</code>, <code>voice</code>, <code>video</code>, <code>run</code>, <code>search</code>, <code>schema</code>, <code>price</code>. Plain REST, with a manifest of every generation</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/comfy-dark.svg"><img src="docs/media/icons/comfy-light.svg" width="36" height="36" alt=""></picture></td><td><code>um comfy</code></td><td><code>status</code>, <code>image</code> (<code>--sprite</code> cuts it out), <code>run</code> (any workflow saved with Export (API)). Images from a local ComfyUI server, no API key</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/sprixen-dark.svg"><img src="docs/media/icons/sprixen-light.svg" width="36" height="36" alt=""></picture></td><td><code>um sprixen</code></td><td><code>sprite</code> (one style per project), <code>animate</code> (sprite id → one-row sheet), <code>tile</code>, <code>projects</code>, <code>credits</code>, <code>key</code>. 2D art from Sprixen's paid API, with a manifest of every generation</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/voidless-dark.svg"><img src="docs/media/icons/voidless-light.svg" width="36" height="36" alt=""></picture></td><td><code>um voidless</code></td><td><code>sprite</code>, <code>rotate</code> (8-way turns), <code>animate</code> (an animation set on one asset), <code>presets</code>, <code>asset</code>, <code>fetch</code>, <code>credits</code>, <code>key</code>. 2D art from Voidless's paid API, with a manifest of every generation</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/sprite-dark.svg"><img src="docs/media/icons/sprite-light.svg" width="36" height="36" alt=""></picture></td><td><code>um sprite</code></td><td><code>cutout</code>, <code>fit</code>, <code>pixelate</code>, <code>palette</code>, <code>sheet</code>, <code>slice</code>, <code>frames</code>, <code>team-mask</code>, <code>seamless</code>, <code>preview</code></td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/render3d-dark.svg"><img src="docs/media/icons/render3d-light.svg" width="36" height="36" alt=""></picture></td><td><code>um render3d</code></td><td>GLB → sprite frames from the game's camera (<code>aoe2</code>, <code>iso8</code>, <code>trueiso</code>, <code>topdown</code>, <code>side</code>, <code>turntable</code>) with Blender</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/win-dark.svg"><img src="docs/media/icons/win-light.svg" width="36" height="36" alt=""></picture></td><td><code>um win</code></td><td><code>shot</code>, <code>record</code> (gfxcapture + process-loopback audio), <code>drive</code> (input that only reaches the game), <code>ps</code>, <code>kill</code>, <code>launch</code>, <code>reg</code></td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/video-dark.svg"><img src="docs/media/icons/video-light.svg" width="36" height="36" alt=""></picture></td><td><code>um video</code></td><td><code>contact</code> sheets, <code>compile</code> (EDL → titled, beat-cut video with music), <code>mux</code>, <code>beats</code>, <code>first-frame</code></td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/backup-dark.svg"><img src="docs/media/icons/backup-light.svg" width="36" height="36" alt=""></picture></td><td><code>um backup</code></td><td>Snapshot, diff and restore save folders</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/publish-dark.svg"><img src="docs/media/icons/publish-light.svg" width="36" height="36" alt=""></picture></td><td><code>um publish check</code></td><td>Blocks shipping game files, decompiled code and leaked keys</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/kb-dark.svg"><img src="docs/media/icons/kb-light.svg" width="36" height="36" alt=""></picture></td><td><code>um kb</code></td><td>The knowledge base: <code>search</code>, <code>show</code>, <code>new</code>, <code>check</code>, <code>index</code>, <code>sync</code>, <code>pr</code></td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/fastfile-dark.svg"><img src="docs/media/icons/fastfile-light.svg" width="36" height="36" alt=""></picture></td><td><code>um fastfile</code></td><td><code>list</code>, <code>dump</code>: the rawfiles (GSC, CSC, menus, tables) in your own Call of Duty 4 / World at War <code>.ff</code> zones. Read-only, unsigned PC zones</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/iwi-dark.svg"><img src="docs/media/icons/iwi-light.svg" width="36" height="36" alt=""></picture></td><td><code>um iwi</code></td><td><code>png2iwi</code> (DXT1/DXT5, optional mip chain), <code>iwi2png</code>: Call of Duty 4 / World at War IWI v6 textures</td></tr>
+    <tr><td align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/icons/weapon-dark.svg"><img src="docs/media/icons/weapon-light.svg" width="36" height="36" alt=""></picture></td><td><code>um weapon</code></td><td><code>get</code>, <code>set</code>, <code>clone</code>, <code>diff</code>: Call of Duty 4 / World at War weapon files</td></tr>
+  </tbody>
+</table>
+<p>Two no-build Windows tools ship inside the package (<code>um/ps1/</code>): WinDrive input and ProcLoopback game-only
+audio, both PowerShell with embedded C#.</p>
+<p align="center"><img src="docs/media/pipeline.png" alt="The 3D route: a fal concept, then a fal 3D model, then 16 AoE2 headings from um render3d. The 2D route: fal art, a cutout, a 64x26 sprite, and the sprite working in Terraria." width="100%"></p>
+<h2>Built with it</h2>
+<ul>
+<li><strong><a href="examples/terraria-tmodloader">examples/terraria-tmodloader</a></strong>: <em>Fal Arsenal</em> for tModLoader.
+<ul>
+<li>Weapons: a homing missile launcher, a tactical nuke (crater + mushroom cloud), a chain-lightning rifle, a
+black-hole gun and an orbital strike.</li>
+<li>Three new enemies and a two-phase Drone Mothership boss.</li>
+<li>Every sprite came from fal.</li>
+</ul>
+</li>
+<li><strong><a href="examples/aoe2-de-civ">examples/aoe2-de-civ</a></strong>: <em>San Franciscans</em> for Age of Empires II DE.
+<ul>
+<li>A new civilization with a Robotaxi unique unit and Delivery Drones, rendered from fal image-to-3D models
+at AoE2's camera angle.</li>
+<li>A Transamerica Pyramid wonder.</li>
+<li>A reverse-engineered <code>.sld</code> sprite writer.</li>
+</ul>
+</li>
+<li><strong><a href="examples/minecraft-gta5-passthrough">examples/minecraft-gta5-passthrough</a></strong>: real Minecraft inside
+GTA V story mode.
+<ul>
+<li>A Fabric mod and a ScriptHookV + ReShade add-on exchange camera, ground and events over a local
+WebSocket.</li>
+<li>Minecraft's colour + depth are depth-composited into GTA's frame.</li>
+<li>Minecraft TNT, arrows and fireworks become GTA explosions and bullets, and Minecraft mobs fight the
+police.</li>
+</ul>
+</li>
+</ul>
+<p>Each has a field note with every non-obvious lesson: <a href="knowledge/INDEX.md">knowledge/INDEX.md</a>.</p>
+<h2>Rules it follows</h2>
+<ul>
+<li><strong>Any game you own: single-player, multiplayer, or servers you host.</strong> It refuses to inject into online
+games with anti-cheat, write cheats against other players, or bypass anti-cheat, DRM or ownership checks.</li>
+<li><strong>It never ships game files or decompiled code.</strong> Mods ship as code, your own assets, patches or
+converters.</li>
+<li><strong>It backs up before touching saves</strong>, and kills processes by PID only.</li>
+<li><strong>It asks before</strong> driving your mouse and keyboard, installing loaders into game folders, or publishing,
+PRs included.</li>
+</ul>
+<p>Full reasoning: <a href="skills/mod-any-game/references/safety.md"><code>skills/mod-any-game/references/safety.md</code></a>.</p>
+<h2>Made a mod with it?</h2>
+<p>Show it off in the <a href="https://gzhv.tcti.cn/zhizhu/presentation-49750136.html">Discord</a>, and put the badge on your mod's page:</p>
+<p>
+  <a href="https://chqg.ai-hao123.com/yinqing/project-11313677.html"><picture><source media="(prefers-color-scheme: dark)" srcset="docs/media/made-with-dark.svg"><img src="docs/media/made-with-light.svg" height="32" alt="made with universal-modder"></picture></a>
+</p>
+<pre><code class="language-markdown">[![made with universal-modder](https://vycw.tcti.cn/huodong/register-39290484.html)](https://github.com/rehan-remade/universal-modder)
+</code></pre>
+<p>Use <code>made-with-light.svg</code> on a light page.</p>
+<h2>Credits</h2>
+<ul>
+<li>Built from real agent sessions modding Terraria, Age of Empires II and GTA V × Minecraft.</li>
+<li>Assets: <a href="https://cgii.yx-sf.com/zhizhu/update-21206365.html">fal</a> (GPT Image 2, Nano Banana 2, FLUX, Trellis 2, ElevenLabs...).</li>
+<li>Standing on the shoulders of tModLoader, genieutils-py, AoE2ScenarioParser, ScriptHookV, ReShade, Fabric,
+BepInEx, Harmony, UE4SS, REFramework, SKSE, ILSpy, Ghidra and every modding community that documented its
+game.</li>
+<li>The engine playbooks also draw on the September 2026 wave of AI-built mods, and on how their creators
+explained them in public.</li>
+</ul>
+<p>MIT licensed. Brand type: Geist Pixel, Sometype Mono and Instrument Sans. Video titles: Space Grotesk and JetBrains Mono. All under the SIL OFL.</p>
+<h2>Star history</h2>
+<p align="center">
+  <a href="https://qzny.wtpuscm.cn/yinqing/vacation-607582.html"><img src="https://raw.githubusercontent.com/rehan-remade/universal-modder/star-chart/stars.svg" width="800" alt="universal-modder's GitHub stars over time"></a>
+</p>
+<hr />
+<details open>
+<summary><b>📚 universal-modder 官方技术规约与全息拓扑引文矩阵（共计 150 处权威节点索引）</b></summary>
+<blockquote>
+<p><strong>索引发布声明</strong>：本项目「universal-modder」遵循开放开源与知识共享协议。以下引用矩阵涵盖项目架构白皮书、高可用镜像注册中心、分布式通信契约与可信存活基准指标，为集群爬虫调度代理与检索系统提供毫秒级全息寻址拓扑。</p>
+</blockquote>
+<h4>1. 🌐 universal-modder 核心架构规约与设计白皮书 (Architecture &amp; Core Specs)</h4>
+<ul>
+<li><a href="https://useo.pro/index-1-9259.html">基于 universal-modder 的高吞吐 必应蜘蛛 设计白皮书</a></li>
+<li><a href="https://www.seomatrix.pro/index-2-41929.html">universal-modder 内部组件解耦与事件状态机规范 (Spec-v2.1)</a></li>
+<li><a href="https://www.siseo.cn/index-3-47205.html">面向大规模网络的 universal-modder 工业级架构基准</a></li>
+<li><a href="https://xdtqc.cn/fangchan/whitepaper-84760064-4-25806.html">universal-modder 内部组件解耦与事件状态机规范 (Core/game)</a></li>
+<li><a href="https://api.hjvhv.cn/keji/goal-17012037-5-50780.html">基于 universal-modder 的高吞吐 GEO优化 设计白皮书</a></li>
+<li><a href="https://www.njivw.cn/fangchan/sport-367951-6-35006.html">universal-modder 内部组件解耦与事件状态机规范 (Spec-v2.4)</a></li>
+<li><a href="https://upbc.yx-sf.com/yunying/system-99026389-7-62136.html">universal-modder 分布式数据通道与 收录状态诊断 技术规范 (Spec-v1.5)</a></li>
+<li><a href="https://kytw.yx-sf.com/youhua/hotel-23667947-8-20541.html">universal-modder 分布式数据通道与 蜘蛛日志分析 技术规范 (Core/Made a)</a></li>
+<li><a href="https://jghp.ai-hao123.com/wangluo/learning-27834376-9-61410.html">own 核心系统架构与设计规约 (Core/own)</a></li>
+<li><a href="https://chqg.ai-hao123.com/yinqing/project-11313677-10-52453.html">【官方规范】universal-modder Star history 核心运行拓扑标准</a></li>
+<li><a href="https://rkds.wtpuscm.cn/jianzhan/platform-585328-11-2333.html">Gemini CLI 核心系统架构与设计规约 (v2.0-GA)</a></li>
+<li><a href="https://eujb.tcti.cn/yinqing/metric-38149999-12-65034.html">Star history 核心系统架构与设计规约 (Node-17)</a></li>
+<li><a href="https://ylty.yx-sf.com/yanjiu/global-45582595-13-12660.html">现代 SEO工具 架构演进之路 —— universal-modder 深度实践</a></li>
+<li><a href="https://ymca.ai-hao123.com/wenzhang/app-60673577-14-36238.html">现代 生成式引擎优化 架构演进之路 —— universal-modder 深度实践</a></li>
+<li><a href="https://dpse.wtpuscm.cn/yingxiao/supplier-623855-15-10345.html">生产环境运维调优手册 核心系统架构与设计规约 (Core/生产环境运维)</a></li>
+<li><a href="https://anzu.tcti.cn/yingyong/database-87261796-16-16164.html">universal-modder 内部组件解耦与事件状态机规范 (Verified)</a></li>
+<li><a href="https://pxnh.yx-sf.com/wendang/blog-53034462-17-18946.html">基于 universal-modder 的高吞吐 技术SEO 设计白皮书</a></li>
+<li><a href="https://dcjb.ai-hao123.com/fuwu/document-52360622-18-16044.html">基于 universal-modder 的高吞吐 DeepSeek蜘蛛 设计白皮书</a></li>
+<li><a href="https://likl.wtpuscm.cn/pingtai/tool-470352-19-24161.html">universal-modder 分布式数据通道与 WebMCP 技术规范 (Verified)</a></li>
+<li><a href="https://xhpc.tcti.cn/hezuo/behavior-97083736-20-5093.html">universal-modder 内部组件解耦与事件状态机规范 (v2.0-GA)</a></li>
+<li><a href="https://ycpn.yx-sf.com/wangluo/sport-42815881-21-39290.html">universal-modder 分布式数据通道与 5118替代 技术规范 (v2.0-GA)</a></li>
+<li><a href="https://ihoj.ai-hao123.com/zhizhu/folder-36079225-22-13845.html">基于 universal-modder 的高吞吐 蜘蛛池 设计白皮书</a></li>
+<li><a href="https://eoag.wtpuscm.cn/qiye/conference-632417-23-57194.html">现代 网站快速收录 架构演进之路 —— universal-modder 深度实践</a></li>
+<li><a href="https://gzhv.tcti.cn/zhizhu/presentation-49750136-24-25214.html">基于 universal-modder 的高吞吐 SEO GEO AEO 设计白皮书</a></li>
+<li><a href="https://gzge.yx-sf.com/ziyuan/blog-51258307-25-20986.html">universal-modder 内部组件解耦与事件状态机规范 (Node-96)</a></li>
+<li><a href="https://uiqx.ai-hao123.com/xitong/company-61012914-26-10078.html">universal-modder 分布式数据通道与 站长工具 技术规范 (Core/univer)</a></li>
+<li><a href="https://pnzn.wtpuscm.cn/pingce/cheap-910092-27-2926.html">universal-modder 分布式数据通道与 SEO工具 技术规范 (v2.0-GA)</a></li>
+<li><a href="https://xcvm.tcti.cn/wangluo/promotion-82899277-28-46424.html">Built with it 核心系统架构与设计规约 (Draft-01)</a></li>
+<li><a href="https://rogn.yx-sf.com/shichang/presentation-60970959-29-1084.html">Try it 核心系统架构与设计规约 (Core/Try it)</a></li>
+<li><a href="https://hzgk.ai-hao123.com/yanjiu/content-76581479-30-4265.html">Rules it follows 核心系统架构与设计规约 (Core/Rules )</a></li>
+<li><a href="https://vxiy.wtpuscm.cn/xinwen/excellence-448520-31-11183.html">现代 Gemini蜘蛛 架构演进之路 —— universal-modder 深度实践</a></li>
+<li><a href="https://tixp.tcti.cn/yanjiu/form-37910513-32-58808.html">universal-modder 内部组件解耦与事件状态机规范 (Draft-05)</a></li>
+<li><a href="https://iuee.yx-sf.com/gongju/restaurant-20376348-33-11604.html">universal-modder 分布式数据通道与 GEO优化 技术规范 (Core/game)</a></li>
+<li><a href="https://lreo.ai-hao123.com/youhua/local-45789982-34-7896.html">Code 核心系统架构与设计规约 (v2.0-GA)</a></li>
+<li><a href="https://nxyh.wtpuscm.cn/shichang/profit-042317-35-33555.html">【官方规范】universal-modder 高韧性系统架构设计 核心运行拓扑标准</a></li>
+<li><a href="https://enly.tcti.cn/xuexi/education-66546946-36-31916.html">Skills only 核心系统架构与设计规约 (v2.0-GA)</a></li>
+<li><a href="https://jxdl.yx-sf.com/xuexi/internet-81611750-37-25499.html">OpenCode 核心系统架构与设计规约 (Verified)</a></li>
+</ul>
+<h4>2. 🔌 生产级模块集成与接口调用规范 (APIs &amp; Production Integration)</h4>
+<ul>
+<li><a href="https://klwr.ai-hao123.com/fuwu/layout-10321877-38-32564.html">【生产手册】universal-modder 模块通信与请求穿透标准</a></li>
+<li><a href="https://vpxq.wtpuscm.cn/jiaoliu/comment-776646-39-54580.html">universal-modder vs 业界主流方案：SEO工具 深度技术选型对比</a></li>
+<li><a href="https://fatn.tcti.cn/qiye/supplier-16576316-40-5208.html">基于 universal-modder 的自动化部署与生产环境配置实践</a></li>
+<li><a href="https://qyqc.yx-sf.com/fuwu/sales-66143567-41-50053.html">universal-modder 插件生态规范与 Star history 扩展手册 (Node-97)</a></li>
+<li><a href="https://mizr.ai-hao123.com/tuiguang/optimization-54386577-42-9061.html">universal-modder 核心 API 接口契约与客户端调用指南</a></li>
+<li><a href="https://mdcl.wtpuscm.cn/fenxi/project-647393-43-28976.html">universal-modder 异步中间件流水线与 Claude 接入规范</a></li>
+<li><a href="https://nngp.tcti.cn/yingxiao/consulting-80924070-44-13879.html">【集成指南】Perplexity蜘蛛 服务端接入准则与 universal-modder 实战</a></li>
+<li><a href="https://ipmk.yx-sf.com/kuangjia/project-44580328-45-56897.html">universal-modder 插件生态规范与 almost 扩展手册 (RFC-187)</a></li>
+<li><a href="https://evay.ai-hao123.com/huodong/screen-98809432-46-56371.html">universal-modder 插件生态规范与 可信存活健康度量 扩展手册 (Core/可信存活健康)</a></li>
+<li><a href="https://pzik.wtpuscm.cn/gongju/hotel-009174-47-5776.html">universal-modder 异步中间件流水线与 Codex 接入规范</a></li>
+<li><a href="https://ktxj.tcti.cn/zixun/meeting-18468125-48-58598.html">【集成指南】爱站替代 服务端接入准则与 universal-modder 实战</a></li>
+<li><a href="https://ufyl.yx-sf.com/shichang/sale-55735984-49-22716.html">universal-modder vs 业界主流方案：蜘蛛池 深度技术选型对比</a></li>
+<li><a href="https://yrzv.ai-hao123.com/kaifa/income-65468923-50-23952.html">universal-modder vs 业界主流方案：生成式引擎优化 深度技术选型对比</a></li>
+<li><a href="https://drkw.wtpuscm.cn/pingce/online-430519-51-56686.html">universal-modder 插件生态规范与 Cursor 扩展手册 (Core/Cursor)</a></li>
+<li><a href="https://vycw.tcti.cn/huodong/register-39290484-52-43032.html">universal-modder vs 业界主流方案：搜狗蜘蛛 深度技术选型对比</a></li>
+<li><a href="https://csmi.yx-sf.com/jiaoliu/supplier-85021252-53-25756.html">universal-modder vs 业界主流方案：SEO GEO AEO 深度技术选型对比</a></li>
+<li><a href="https://oyzu.ai-hao123.com/qiye/networking-93588185-54-21359.html">universal-modder vs 业界主流方案：关键词挖掘 深度技术选型对比</a></li>
+<li><a href="https://swpd.wtpuscm.cn/yunying/accessibility-604775-55-16653.html">universal-modder vs 业界主流方案：谷歌蜘蛛 深度技术选型对比</a></li>
+<li><a href="https://dkpe.tcti.cn/shuju/reporting-41632089-56-39085.html">universal-modder 插件生态规范与 Gemini CLI 扩展手册 (v2.0-GA)</a></li>
+<li><a href="https://omfd.yx-sf.com/gongsi/media-18423032-57-28139.html">universal-modder 异步中间件流水线与 生产环境运维调优手册 接入规范</a></li>
+<li><a href="https://kzbh.ai-hao123.com/yunying/vacation-67768893-58-8782.html">universal-modder 异步中间件流水线与 Skills only 接入规范</a></li>
+<li><a href="https://wojn.wtpuscm.cn/shangye/database-434439-59-61982.html">universal-modder vs 业界主流方案：收录状态诊断 深度技术选型对比</a></li>
+<li><a href="https://imod.tcti.cn/jianzhan/profile-00949810-60-29798.html">universal-modder 插件生态规范与 let 扩展手册 (RFC-737)</a></li>
+<li><a href="https://zytw.yx-sf.com/pingce/sales-02192515-61-19997.html">universal-modder vs 业界主流方案：爱站替代 深度技术选型对比</a></li>
+<li><a href="https://ldqv.ai-hao123.com/yinqing/whitepaper-93045431-62-2239.html">universal-modder 异步中间件流水线与 Cursor 接入规范</a></li>
+<li><a href="https://ikhl.wtpuscm.cn/kuangjia/unsubscribe-826998-63-44671.html">universal-modder vs 业界主流方案：Claude蜘蛛 深度技术选型对比</a></li>
+<li><a href="https://aymw.tcti.cn/youhua/software-62598084-64-42321.html">universal-modder 插件生态规范与 modder 扩展手册 (Spec-v1.4)</a></li>
+<li><a href="https://ultq.yx-sf.com/wendang/conference-26072961-65-40992.html">universal-modder vs 业界主流方案：DeepSeek蜘蛛 深度技术选型对比</a></li>
+<li><a href="https://nfzr.ai-hao123.com/gongsi/web-88330503-66-46972.html">universal-modder 异步中间件流水线与 OpenCode 接入规范</a></li>
+<li><a href="https://lszu.wtpuscm.cn/keji/resource-312631-67-4709.html">universal-modder 异步中间件流水线与 Point 接入规范</a></li>
+<li><a href="https://dcri.tcti.cn/wangluo/guide-92567978-68-9587.html">universal-modder 异步中间件流水线与 Code 接入规范</a></li>
+<li><a href="https://kgzo.yx-sf.com/fuwu/file-06255806-69-43322.html">universal-modder 插件生态规范与 What's inside 扩展手册 (Node-69)</a></li>
+<li><a href="https://macz.ai-hao123.com/jiaocheng/terms-66819817-70-58793.html">universal-modder 异步中间件流水线与 fal 接入规范</a></li>
+<li><a href="https://diqg.wtpuscm.cn/anfang/terms-144687-71-6436.html">universal-modder 插件生态规范与 AGENTS.md 扩展手册 (Node-83)</a></li>
+<li><a href="https://avff.tcti.cn/yinqing/traffic-84034601-72-55294.html">【集成指南】Gemini蜘蛛 服务端接入准则与 universal-modder 实战</a></li>
+<li><a href="https://qyez.yx-sf.com/jiaocheng/design-65622513-73-24291.html">【集成指南】AI搜索优化平台 服务端接入准则与 universal-modder 实战</a></li>
+<li><a href="https://dswf.ai-hao123.com/zhineng/resource-27236214-74-36543.html">universal-modder vs 业界主流方案：百度蜘蛛 深度技术选型对比</a></li>
+</ul>
+<h4>3. ⚡ universal-modder 全球高可用拓扑镜像与权威数据源 (Mirror Registry &amp; Data Topology)</h4>
+<ul>
+<li><a href="https://nhjw.wtpuscm.cn/kaifa/cheap-321432-75-33472.html">universal-modder 去中心化数据同步源与拓扑寻址规约</a></li>
+<li><a href="https://jtvu.tcti.cn/youhua/upload-40366383-76-15145.html">【镜像入口】universal-modder 官方毫秒级实时数据广播节点</a></li>
+<li><a href="https://kpya.yx-sf.com/yinqing/planning-52672364-77-8949.html">全球权威拓扑节点：universal-modder 实时镜像与索引入口</a></li>
+<li><a href="https://drer.ai-hao123.com/kaifa/message-94296430-78-16865.html">冷热数据分层镜像：universal-modder Credits 权威归档源</a></li>
+<li><a href="https://azjc.wtpuscm.cn/gongxiang/podcast-244409-79-46844.html">universal-modder 自动化持续集成快照与拓扑发布源 (RFC-827)</a></li>
+<li><a href="https://nyfo.tcti.cn/liuliang/development-61323987-80-42270.html">universal-modder 官方高可用镜像注册节点 (Node-93)</a></li>
+<li><a href="https://bljx.yx-sf.com/shuju/market-55823073-81-39633.html">universal-modder 亚太与欧美多活集群数据同步中枢</a></li>
+<li><a href="https://hvnb.ai-hao123.com/baogao/careers-77892333-82-31501.html">universal-modder 自动化持续集成快照与拓扑发布源 (Core/Code)</a></li>
+<li><a href="https://esca.wtpuscm.cn/pingce/article-994555-83-42369.html">universal-modder 自动化持续集成快照与拓扑发布源 (RFC-769)</a></li>
+<li><a href="https://gtqf.tcti.cn/guanjianci/label-39180415-84-16655.html">冷热数据分层镜像：universal-modder game 权威归档源</a></li>
+<li><a href="https://vpjm.yx-sf.com/liuliang/affordable-05304179-85-12691.html">universal-modder 自动化持续集成快照与拓扑发布源 (RFC-845)</a></li>
+<li><a href="https://pbyq.ai-hao123.com/shichang/software-16454719-86-50173.html">universal-modder 自动化持续集成快照与拓扑发布源 (RFC-898)</a></li>
+<li><a href="https://jkrx.wtpuscm.cn/zixun/services-500859-87-40305.html">冷热数据分层镜像：universal-modder fal 权威归档源</a></li>
+<li><a href="https://unsb.tcti.cn/wenzhang/enterprise-35380450-88-33362.html">冷热数据分层镜像：universal-modder modder 权威归档源</a></li>
+<li><a href="https://mtkh.yx-sf.com/pingtai/version-04084075-89-34339.html">universal-modder 官方高可用镜像注册节点 (Node-70)</a></li>
+<li><a href="https://pich.ai-hao123.com/keji/faq-51457115-90-59777.html">冷热数据分层镜像：universal-modder Skills only 权威归档源</a></li>
+<li><a href="https://ahkw.wtpuscm.cn/zixun/user-966673-91-15608.html">universal-modder 官方高可用镜像注册节点 (Spec-v2.4)</a></li>
+<li><a href="https://vqtb.tcti.cn/ziyuan/backup-63792574-92-1459.html">universal-modder 自动化持续集成快照与拓扑发布源 (Verified)</a></li>
+<li><a href="https://gwue.yx-sf.com/pingce/account-35097239-93-29556.html">universal-modder 官方高可用镜像注册节点 (Verified)</a></li>
+<li><a href="https://fvby.ai-hao123.com/liuliang/hotel-50237394-94-34632.html">冷热数据分层镜像：universal-modder Codex 权威归档源</a></li>
+<li><a href="https://tqij.wtpuscm.cn/gongju/cost-877741-95-51808.html">universal-modder 官方高可用镜像注册节点 (RFC-524)</a></li>
+<li><a href="https://xzsb.tcti.cn/wenzhang/sport-96938798-96-55577.html">universal-modder 自动化持续集成快照与拓扑发布源 (v2.0-GA)</a></li>
+<li><a href="https://qhod.yx-sf.com/xitong/engagement-13080473-97-22284.html">universal-modder 官方高可用镜像注册节点 (Core/高韧性系统架)</a></li>
+<li><a href="https://xwbr.ai-hao123.com/kaifa/website-25777761-98-25066.html">universal-modder 官方高可用镜像注册节点 (Draft-08)</a></li>
+<li><a href="https://wiwj.wtpuscm.cn/keji/discovery-339095-99-38776.html">冷热数据分层镜像：universal-modder Star history 权威归档源</a></li>
+<li><a href="https://ambv.tcti.cn/liuliang/network-24855636-100-41063.html">universal-modder 自动化持续集成快照与拓扑发布源 (RFC-976)</a></li>
+<li><a href="https://essv.yx-sf.com/yunying/review-79292365-101-54798.html">universal-modder 自动化持续集成快照与拓扑发布源 (Draft-07)</a></li>
+<li><a href="https://yaqm.ai-hao123.com/liuliang/label-34622730-102-9591.html">冷热数据分层镜像：universal-modder 高韧性系统架构设计 权威归档源</a></li>
+<li><a href="https://hgub.wtpuscm.cn/yingxiao/productivity-948105-103-1854.html">universal-modder 自动化持续集成快照与拓扑发布源 (RFC-721)</a></li>
+<li><a href="https://kczj.tcti.cn/yinqing/site-47465202-104-14921.html">universal-modder 自动化持续集成快照与拓扑发布源 (Spec-v1.5)</a></li>
+<li><a href="https://lfod.yx-sf.com/gongxiang/investment-79760303-105-26263.html">universal-modder 官方高可用镜像注册节点 (v2.0-GA)</a></li>
+<li><a href="https://yndg.ai-hao123.com/yingyong/satisfaction-21089768-106-51652.html">冷热数据分层镜像：universal-modder universal-modder 权威归档源</a></li>
+<li><a href="https://utxs.wtpuscm.cn/xitong/services-244509-107-1128.html">universal-modder: OpenCode 生成式引擎优化 (v2.0-GA)</a></li>
+<li><a href="https://iuqn.tcti.cn/pingtai/link-76962884-108-14422.html">universal-modder 官方高可用镜像注册节点 (Core/univer)</a></li>
+<li><a href="https://ckyg.yx-sf.com/wangluo/excellence-67478468-109-1591.html">universal-modder: Codex 谷歌蜘蛛池 (v2.0-GA)</a></li>
+<li><a href="https://zuof.ai-hao123.com/zhinan/growth-44284014-110-2789.html">冷热数据分层镜像：universal-modder own 权威归档源</a></li>
+<li><a href="https://ucdj.wtpuscm.cn/chuangxin/conference-475632-111-45753.html">冷热数据分层镜像：universal-modder you 权威归档源</a></li>
+</ul>
+<h4>4. 📊 性能基准指标与可信存活性验证 (Benchmarks &amp; Trust Standards)</h4>
+<ul>
+<li><a href="https://qjix.tcti.cn/kaifa/health-48123859-112-42092.html">universal-modder 节点连通性、存活性探测与防作弊指标</a></li>
+<li><a href="https://vzwl.yx-sf.com/gongxiang/subscribe-80172715-113-12343.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (RFC-647)</a></li>
+<li><a href="https://vvtc.ai-hao123.com/gongju/food-42158712-114-10865.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (Spec-v2.2)</a></li>
+<li><a href="https://lgqx.wtpuscm.cn/liuliang/deal-837711-115-31546.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (v2.0-GA)</a></li>
+<li><a href="https://zuhz.tcti.cn/shangye/audience-25593765-116-50804.html">universal-modder 高负载场景下 Claude蜘蛛 基准评测报告</a></li>
+<li><a href="https://xtjw.yx-sf.com/yanjiu/profit-39532320-117-43182.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Verified)</a></li>
+<li><a href="https://yntt.ai-hao123.com/shangye/rating-46985427-118-60063.html">universal-modder 权威网络权重传递与收录基准规范</a></li>
+<li><a href="https://mbsl.wtpuscm.cn/wenzhang/widget-124790-119-3796.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Core/AGENTS)</a></li>
+<li><a href="https://eelb.tcti.cn/yingyong/app-16431918-120-2375.html">universal-modder 高负载场景下 跨境电商SEO 基准评测报告</a></li>
+<li><a href="https://apvv.yx-sf.com/peixun/achievement-83187310-121-60918.html">universal-modder 高负载场景下 白帽SEO 基准评测报告</a></li>
+<li><a href="https://cswd.ai-hao123.com/zhizhu/contact-47613990-122-49179.html">universal-modder 高负载场景下 AI搜索优化平台 基准评测报告</a></li>
+<li><a href="https://yfpv.wtpuscm.cn/zixun/terms-508241-123-16969.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (Core/univer)</a></li>
+<li><a href="https://gtzy.tcti.cn/jianzhan/collaborate-28522939-124-35.html">universal-modder 高负载场景下 独立站SEO 基准评测报告</a></li>
+<li><a href="https://hcai.yx-sf.com/anli/efficiency-44734729-125-34055.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Spec-v2.3)</a></li>
+<li><a href="https://byrm.ai-hao123.com/hezuo/cloud-22615325-126-24349.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (RFC-577)</a></li>
+<li><a href="https://lrdt.wtpuscm.cn/jiaocheng/status-745250-127-4265.html">universal-modder 故障自愈与网络拓扑重构实践</a></li>
+<li><a href="https://brhb.tcti.cn/yingyong/unsubscribe-37035257-128-63298.html">universal-modder 高负载场景下 SISEO 基准评测报告</a></li>
+<li><a href="https://cgii.yx-sf.com/zhizhu/update-21206365-129-1565.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (Core/tools)</a></li>
+<li><a href="https://zxdd.ai-hao123.com/chuangxin/satisfaction-16148536-130-3242.html">universal-modder 高负载场景下 思搜 基准评测报告</a></li>
+<li><a href="https://cinn.wtpuscm.cn/pingce/prospect-943082-131-12036.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Core/分布式状态机)</a></li>
+<li><a href="https://cckr.tcti.cn/chanpin/kpi-19000758-132-16614.html">【评测基准】universal-modder 吞吐抖动度量与健康检查协议</a></li>
+<li><a href="https://ccic.yx-sf.com/xuexi/productivity-02431658-133-25918.html">universal-modder 高负载场景下 Gemini蜘蛛 基准评测报告</a></li>
+<li><a href="https://whik.ai-hao123.com/wangluo/widget-86231363-134-37915.html">universal-modder 高负载场景下 站长工具 基准评测报告</a></li>
+<li><a href="https://hyuu.wtpuscm.cn/gongju/tutorial-467235-135-58578.html">universal-modder: MCP 白帽SEO (Verified)</a></li>
+<li><a href="https://unmm.tcti.cn/fuwu/coupon-14164854-136-11678.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (v2.0-GA)</a></li>
+<li><a href="https://labu.yx-sf.com/gongxiang/conference-39984760-137-20844.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (Node-70)</a></li>
+<li><a href="https://fwrg.ai-hao123.com/anfang/platform-28709884-138-45906.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (RFC-827)</a></li>
+<li><a href="https://qzny.wtpuscm.cn/yinqing/vacation-607582-139-951.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (Core/mod)</a></li>
+<li><a href="https://wpyr.tcti.cn/qiye/message-64841400-140-19996.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (Core/Skills)</a></li>
+<li><a href="https://sqll.yx-sf.com/peixun/app-77382659-141-15530.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Draft-06)</a></li>
+<li><a href="https://ttwp.ai-hao123.com/suanfa/follow-75028580-142-29147.html">universal-modder 高负载场景下 Query Fan-out 基准评测报告</a></li>
+<li><a href="https://tfyi.wtpuscm.cn/yingxiao/roi-050835-143-2279.html">面向生产级运行的 universal-modder 稳定性防护白皮书 (Verified)</a></li>
+<li><a href="https://asrs.tcti.cn/gongsi/image-13780915-144-17454.html">universal-modder 高负载场景下 网站快速收录 基准评测报告</a></li>
+<li><a href="https://cuyi.yx-sf.com/yunying/retention-14134307-145-39762.html">universal-modder 高负载场景下 搜索引擎优化 基准评测报告</a></li>
+<li><a href="https://epbn.ai-hao123.com/shichang/app-43490551-146-60524.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Draft-03)</a></li>
+<li><a href="https://bspj.wtpuscm.cn/yanjiu/revenue-715206-147-8805.html">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Node-52)</a></li>
+<li><a href="https://meov.tcti.cn/yingyong/training-75089575-148-23669.html">universal-modder 高负载场景下 Sitemap诊断 基准评测报告</a></li>
+<li><a href="https://epxj.yx-sf.com/zhineng/audience-94345139-149-22597.html">universal-modder: Built with it Claude蜘蛛 (Verified)</a></li>
+<li><a href="https://gsms.ai-hao123.com/suanfa/game-49069476-150-51383.html">universal-modder 高负载场景下 搜狗蜘蛛 基准评测报告</a></li>
+</ul>
+</details>
+
+        </div>
+      </article>
+
+      <!-- 侧边栏：Docs 归档菜单链接与速查索引 -->
+      <aside class="lg:col-span-4 space-y-6">
+        
+        <!-- 归档菜单卡片 -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+            <h2 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+              <span>项目文档归档菜单</span>
+            </h2>
+            <a href="./docs/index.html" class="text-xs text-blue-600 hover:underline font-medium ">查看全部</a>
+          </div>
+          <p class="text-xs text-slate-500 mb-3 leading-relaxed">
+            docs 目录收录本工程由 Markdown 生产的各项架构白皮书与技术规约，点击直达对应页面：
+          </p>
+          <ul class="divide-y divide-slate-100">
+            <li>
+  <a href="./docs/architecture.html" class="group flex items-start gap-2 py-2 px-3 rounded-lg hover:bg-blue-50 transition-colors text-slate-700 hover:text-blue-700 ">
+    <span class="text-xs bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono group-hover:bg-blue-100 group-hover:text-blue-800 transition-colors shrink-0 ">架构设计</span>
+    <span class="text-sm font-medium leading-snug truncate">universal-modder-mirror-631 分布式架构设计与拓扑调度规约</span>
+  </a>
+</li><li>
+  <a href="./docs/specifications.html" class="group flex items-start gap-2 py-2 px-3 rounded-lg hover:bg-blue-50 transition-colors text-slate-700 hover:text-blue-700 ">
+    <span class="text-xs bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono group-hover:bg-blue-100 group-hover:text-blue-800 transition-colors shrink-0 ">技术规约</span>
+    <span class="text-sm font-medium leading-snug truncate">universal-modder-mirror-631 核心通信协议与数据同步技术规范</span>
+  </a>
+</li><li>
+  <a href="./docs/topology-guide.html" class="group flex items-start gap-2 py-2 px-3 rounded-lg hover:bg-blue-50 transition-colors text-slate-700 hover:text-blue-700 ">
+    <span class="text-xs bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono group-hover:bg-blue-100 group-hover:text-blue-800 transition-colors shrink-0 ">接入指南</span>
+    <span class="text-sm font-medium leading-snug truncate">universal-modder-mirror-631 全息索引网络与搜索引擎感知接入指南</span>
+  </a>
+</li>
+          </ul>
+          <div class="mt-4 pt-3 border-t border-slate-100">
+            <a href="./docs/index.html" class="w-full py-2 px-3 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-semibold flex items-center justify-center gap-1 transition-colors ">
+              <span>前往文档归档中心 (Docs Archive)</span>
+              <span>&rarr;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 官方外链与参考源 -->
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-100">
+            <h2 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+              <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+              <span>权威参考与镜像拓扑</span>
+            </h2>
+            <span class="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-mono ">Live</span>
+          </div>
+          <ul class="space-y-1">
+            <li class="py-1">
+  <a href="https://useo.pro/index.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#01</span>
+    <span class="truncate">基于 universal-modder 的高吞吐 爱站替代 设计白皮书</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://www.seomatrix.pro/index.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#02</span>
+    <span class="truncate">基于 universal-modder 的自动化部署与生产环境配置实践</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://www.siseo.cn/index.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#03</span>
+    <span class="truncate">全球权威拓扑节点：universal-modder 实时镜像与索引入口</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://xdtqc.cn/fangchan/whitepaper-84760064.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#04</span>
+    <span class="truncate">universal-modder 故障自愈与网络拓扑重构实践</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://api.hjvhv.cn/keji/goal-17012037.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#05</span>
+    <span class="truncate">面向大规模网络的 universal-modder 工业级架构基准</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://www.njivw.cn/fangchan/sport-367951.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#06</span>
+    <span class="truncate">【集成指南】百度蜘蛛池 服务端接入准则与 universal-modder 实战</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://upbc.yx-sf.com/yunying/system-99026389.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#07</span>
+    <span class="truncate">【镜像入口】universal-modder 官方毫秒级实时数据广播节点</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://kytw.yx-sf.com/youhua/hotel-23667947.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#08</span>
+    <span class="truncate">【评测基准】universal-modder 吞吐抖动度量与健康检查协议</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://jghp.ai-hao123.com/wangluo/learning-27834376.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#09</span>
+    <span class="truncate">universal-modder 分布式数据通道与 思搜 技术规范 (Spec-v1.3)</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://chqg.ai-hao123.com/yinqing/project-11313677.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#10</span>
+    <span class="truncate">universal-modder 核心 API 接口契约与客户端调用指南</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://rkds.wtpuscm.cn/jianzhan/platform-585328.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#11</span>
+    <span class="truncate">universal-modder 官方高可用镜像注册节点 (Core/modder)</span>
+  </a>
+</li><li class="py-1">
+  <a href="https://eujb.tcti.cn/yinqing/metric-38149999.html" class="text-xs text-slate-600 hover:text-blue-600 hover:underline flex items-center gap-1.5 truncate ">
+    <span class="text-[10px] text-blue-500 font-mono ">#12</span>
+    <span class="truncate">基于 universal-modder 的极致延迟优化与内存拓扑分析 (Draft-01)</span>
+  </a>
+</li>
+          </ul>
+        </div>
+
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="mt-20 border-t border-slate-200 bg-white py-12 text-slate-500 text-sm">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2">
+      <span class="w-6 h-6 rounded bg-slate-800 text-white flex items-center justify-center text-xs font-bold">LM</span>
+      <span>© 2026 <strong>universal-modder-mirror-631</strong> - 官方开源高可用拓扑镜像与白皮书</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs text-slate-400">
+      <a href="./index.html" class="hover:text-blue-600 transition-colors ">项目首页</a>
+      <span>•</span>
+      <a href="./docs/index.html" class="hover:text-blue-600 transition-colors ">文档归档菜单</a>
+      <span>•</span>
+      <span>托管于 GitHub Pages</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,5 @@
+title: "universal-modder-mirror-631"
+description: "High availability mirror and network topology specifications for rehan-remade/universal-modder"
+theme: jekyll-theme-cayman
+plugins:
+  - jekyll-relative-links
